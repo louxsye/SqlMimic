@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net8.0;net9.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    
+    <!-- NuGet Package Properties -->
+    <PackageId>SqlMimic</PackageId>
+    <Version>0.1.1</Version>
+    <Authors>louxsye</Authors>
+    <Company>louxsye</Company>
+    <Product>SqlMimic</Product>
+    <Description>A lightweight .NET library for mocking SQL database operations in unit tests. Provides in-memory implementations of DbConnection, DbCommand, and DbDataReader with full Dapper compatibility.</Description>
+    <PackageTags>testing;mock;sql;database;unittest;dapper;ado.net</PackageTags>
+    <PackageProjectUrl>https://github.com/louxsye/SqlMimic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/louxsye/SqlMimic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Conditional PropertyGroups for different target frameworks -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net462'">
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="170.53.0" />
+  </ItemGroup>
+  
+  <!-- Additional packages for .NET Framework -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>
