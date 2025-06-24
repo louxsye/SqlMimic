@@ -7,7 +7,7 @@ using System.Linq;
 namespace SqlMimic.Core
 {
 
-    internal class MimicParameterCollection : DbParameterCollection
+    public class MimicParameterCollection : DbParameterCollection
     {
         private readonly List<DbParameter> _items = new List<DbParameter>();
         public override int Add(object value) { _items.Add((DbParameter)value); return _items.Count - 1; }

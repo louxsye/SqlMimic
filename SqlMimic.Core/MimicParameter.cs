@@ -5,7 +5,7 @@ using System.Data.Common;
 namespace SqlMimic.Core
 {
 
-    internal class MimicParameter : DbParameter
+    public class MimicParameter : DbParameter
     {
         public override DbType DbType { get; set; }
         public override ParameterDirection Direction { get; set; }
