@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net8.0;net9.0</TargetFrameworks>
+    <PackageId>SqlMimic.Core.Abstractions</PackageId>
+    <Version>0.3.0</Version>
+    <Authors>louxsye</Authors>
+    <Title>SqlMimic Core Abstractions</Title>
+    <Summary>Core abstractions and interfaces for SQL syntax validation in SqlMimic framework.</Summary>
+    <Description>Abstractions for SQL syntax validation in SqlMimic. This package contains interfaces and common types for implementing database-specific SQL validators. Supports .NET Framework 4.6.2+, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>sql;validation;abstractions;interface;dotnet;syntax-validation</PackageTags>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/louxsye/SqlMimic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/louxsye/SqlMimic</PackageProjectUrl>
+    <PackageReleaseNotes>Version 0.3.0: Multi-targeting support for .NET Framework 4.6.2, .NET 8.0, and .NET 9.0.</PackageReleaseNotes>
+    <Copyright>Copyright (c) 2024 louxsye</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

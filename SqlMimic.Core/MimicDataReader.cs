@@ -38,7 +38,11 @@ namespace SqlMimic.Core
         /// </summary>
         public MimicDataReader(string[] columnNames, List<object[]> data)
         {
+#if NET462
             _columnNames = columnNames ?? new string[0];
+#else
+            _columnNames = columnNames ?? Array.Empty<string>();
+#endif
             _data = data ?? new List<object[]>();
             _hasRows = _data.Count > 0;
             _isMultiRowMode = true;
@@ -91,7 +95,7 @@ namespace SqlMimic.Core
                 return (T)value;
             try
             {
-                return (T)Convert.ChangeType(value, typeof(T));
+                return (T)Convert.ChangeType(value, typeof(T))!;
             }
             catch
             {
@@ -196,7 +200,7 @@ namespace SqlMimic.Core
             var value = GetValue(ordinal);
             if (value is Guid g)
                 return g;
-            return Guid.Parse(value.ToString()!);
+            return Guid.Parse(value.ToString() ?? string.Empty);
         }
 
         public override short GetInt16(int ordinal)

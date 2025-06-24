@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net8.0;net9.0</TargetFrameworks>
+    <PackageId>SqlMimic.SqlServer</PackageId>
+    <Version>0.3.0</Version>
+    <Authors>louxsye</Authors>
+    <Title>SqlMimic SQL Server Validator</Title>
+    <Summary>SQL Server syntax validation package for SqlMimic using Microsoft's official T-SQL parser.</Summary>
+    <Description>SQL Server syntax validation for SqlMimic. Provides SQL Server specific implementation of ISqlSyntaxValidator using Microsoft.SqlServer.TransactSql.ScriptDom. Supports .NET Framework 4.6.2+, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>sql;sqlserver;validation;tsql;scriptdom;dotnet;syntax-validation</PackageTags>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/louxsye/SqlMimic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/louxsye/SqlMimic</PackageProjectUrl>
+    <PackageReleaseNotes>Version 0.3.0: Multi-targeting support for .NET Framework 4.6.2, .NET 8.0, and .NET 9.0.</PackageReleaseNotes>
+    <Copyright>Copyright (c) 2024 louxsye</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlMimic.Core.Abstractions\SqlMimic.Core.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="170.53.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

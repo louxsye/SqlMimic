@@ -33,7 +33,7 @@ namespace SqlMimic.Core
         public override void RemoveAt(int index) => throw new NotImplementedException();
         public override void RemoveAt(string parameterName) => throw new NotImplementedException();
         protected override DbParameter GetParameter(int index) => (DbParameter)_items[index];
-        protected override DbParameter GetParameter(string parameterName) => null;
+        protected override DbParameter? GetParameter(string parameterName) => null;
         protected override void SetParameter(int index, DbParameter value) => _items[index] = value;
         protected override void SetParameter(string parameterName, DbParameter value) { }
     }

@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SqlMimic.Core\SqlMimic.Core.csproj" />
+    <ProjectReference Include="..\SqlMimic.Core.Abstractions\SqlMimic.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\SqlMimic.SqlServer\SqlMimic.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

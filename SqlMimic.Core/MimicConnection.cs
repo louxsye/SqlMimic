@@ -13,7 +13,7 @@ namespace SqlMimic.Core
         public IReadOnlyList<MimicCommand> Commands => _cmds;
 
         // test return value
-        public object MockReturnValue { get; set; }
+        public object? MockReturnValue { get; set; }
         public bool? MockHasRows { get; set; }
         // multiple return value
         private readonly Queue<object> _mockReturnValues = new Queue<object>();
@@ -162,8 +162,16 @@ namespace SqlMimic.Core
 
         public MockDataSetup(string[] columnNames, object[][] rows)
         {
+#if NET462
             ColumnNames = columnNames ?? new string[0];
+#else
+            ColumnNames = columnNames ?? Array.Empty<string>();
+#endif
+#if NET462
             Rows = new List<object[]>(rows ?? new object[0][]);
+#else
+            Rows = new List<object[]>(rows ?? Array.Empty<object[]>());
+#endif
         }
     }
 }

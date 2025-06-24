@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using SqlMimic.Core;
+using SqlMimic.Core.Abstractions;
+using SqlMimic.SqlServer;
 using SqlMimic.Tests.Models;
 using SqlMimic.Tests.Repositories;
 
@@ -290,9 +292,10 @@ namespace SqlMimic.Tests
             await repository.CountActiveUsersAsync();
 
             // Validate all SQL commands
+            var validator = new SqlServerSyntaxValidator();
             foreach (var command in connection.Commands)
             {
-                var result = SqlSyntaxValidator.ValidateSyntax(command.CommandText);
+                var result = validator.ValidateSyntax(command.CommandText);
                 Assert.True(result.IsValid, 
                     $"SQL syntax error in command: {command.CommandText}\nErrors: {string.Join(", ", result.Errors)}");
             }
@@ -321,12 +324,13 @@ namespace SqlMimic.Tests
             }).Wait();
 
             // Verify statement types
+            var validator = new SqlServerSyntaxValidator();
             var commands = connection.Commands.ToList();
-            Assert.Equal(SqlStatementType.Select, SqlSyntaxValidator.GetStatementType(commands[0].CommandText));
-            Assert.Equal(SqlStatementType.Insert, SqlSyntaxValidator.GetStatementType(commands[1].CommandText));
-            Assert.Equal(SqlStatementType.Update, SqlSyntaxValidator.GetStatementType(commands[2].CommandText));
-            Assert.Equal(SqlStatementType.Delete, SqlSyntaxValidator.GetStatementType(commands[3].CommandText));
-            Assert.Equal(SqlStatementType.Select, SqlSyntaxValidator.GetStatementType(commands[4].CommandText));
+            Assert.Equal(SqlStatementType.Select, validator.GetStatementType(commands[0].CommandText));
+            Assert.Equal(SqlStatementType.Insert, validator.GetStatementType(commands[1].CommandText));
+            Assert.Equal(SqlStatementType.Update, validator.GetStatementType(commands[2].CommandText));
+            Assert.Equal(SqlStatementType.Delete, validator.GetStatementType(commands[3].CommandText));
+            Assert.Equal(SqlStatementType.Select, validator.GetStatementType(commands[4].CommandText));
         }
     }
 }

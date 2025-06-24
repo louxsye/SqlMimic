@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net8.0;net9.0</TargetFrameworks>
+    <PackageId>SqlMimic.MySQL</PackageId>
+    <Version>0.3.0</Version>
+    <Authors>louxsye</Authors>
+    <Title>SqlMimic MySQL Validator</Title>
+    <Summary>MySQL/MariaDB syntax validation package for SqlMimic with dialect-aware SQL parsing.</Summary>
+    <Description>MySQL syntax validation for SqlMimic. Provides MySQL specific implementation of ISqlSyntaxValidator with dialect-aware SQL parsing. Supports .NET Framework 4.6.2+, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>sql;mysql;mariadb;validation;parser;dotnet;syntax-validation</PackageTags>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/louxsye/SqlMimic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/louxsye/SqlMimic</PackageProjectUrl>
+    <PackageReleaseNotes>Version 0.3.0: Multi-targeting support for .NET Framework 4.6.2, .NET 8.0, and .NET 9.0.</PackageReleaseNotes>
+    <Copyright>Copyright (c) 2024 louxsye</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlMimic.Core.Abstractions\SqlMimic.Core.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+</Project>

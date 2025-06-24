@@ -2,45 +2,34 @@
 
   <PropertyGroup>
     <TargetFrameworks>net462;net8.0;net9.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
     
     <!-- NuGet Package Properties -->
     <PackageId>SqlMimic</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.3.0</Version>
     <Authors>louxsye</Authors>
     <Company>louxsye</Company>
     <Product>SqlMimic</Product>
-    <Description>A lightweight .NET library for mocking SQL database operations in unit tests. Provides in-memory implementations of DbConnection, DbCommand, and DbDataReader with full Dapper compatibility.</Description>
-    <PackageTags>testing;mock;sql;database;unittest;dapper;ado.net</PackageTags>
+    <Title>SqlMimic - SQL Database Mocking Library</Title>
+    <Summary>Lightweight .NET library for mocking SQL database operations and validating SQL syntax in unit tests with multi-database support.</Summary>
+    <Description>A lightweight .NET library for mocking SQL database operations in unit tests. Provides in-memory implementations of DbConnection, DbCommand, and DbDataReader with full Dapper compatibility. Supports .NET Framework 4.6.2+, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>testing;mock;sql;database;unittest;dapper;ado.net;dotnet;mocking;syntax-validation</PackageTags>
     <PackageProjectUrl>https://github.com/louxsye/SqlMimic</PackageProjectUrl>
     <RepositoryUrl>https://github.com/louxsye/SqlMimic</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Version 0.3.0: Multi-targeting support for .NET Framework 4.6.2, .NET 8.0, and .NET 9.0. Enhanced with nullable reference types and modern C# features.</PackageReleaseNotes>
+    <Copyright>Copyright (c) 2024 louxsye</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
-  <!-- Conditional PropertyGroups for different target frameworks -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net462'">
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net462'">
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="170.53.0" />
-  </ItemGroup>
-  
-  <!-- Additional packages for .NET Framework -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="" />

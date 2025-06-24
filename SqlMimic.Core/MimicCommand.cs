@@ -43,7 +43,7 @@ namespace SqlMimic.Core
         public override int ExecuteNonQuery()
         {
             RecordExecution();
-            return MockReturnValue as int? ?? 1;
+            return (MockReturnValue as int?) ?? 1;
         }
 
         public override object? ExecuteScalar()
@@ -87,7 +87,7 @@ namespace SqlMimic.Core
         /// <summary>
         /// Transaction
         /// </summary>
-        public MimicTransaction UsedTransaction => DbTransaction as MimicTransaction;
+        public MimicTransaction? UsedTransaction => DbTransaction as MimicTransaction;
 
         /// <summary>
         /// set DbConnection (internal)

@@ -1,12 +1,19 @@
 using System;
 using System.Linq;
 using Xunit;
-using SqlMimic.Core;
+using SqlMimic.Core.Abstractions;
+using SqlMimic.SqlServer;
 
 namespace SqlMimic.Tests
 {
     public class SqlSyntaxValidatorTests
     {
+        private readonly ISqlSyntaxValidator _validator;
+
+        public SqlSyntaxValidatorTests()
+        {
+            _validator = new SqlServerSyntaxValidator();
+        }
         [Fact]
         public void ValidateSyntax_ValidSelectStatement_ReturnsValid()
         {
@@ -22,12 +29,11 @@ AND
     @baseDate < EndDate";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.True(result.IsValid);
             Assert.Empty(result.Errors);
-            Assert.NotNull(result.ParsedFragment);
         }
 
         [Fact]
@@ -43,7 +49,7 @@ VALUES(
 )";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.True(result.IsValid);
@@ -63,7 +69,7 @@ WHERE
     Id = @id";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.True(result.IsValid);
@@ -77,7 +83,7 @@ WHERE
             var sql = "DELETE FROM Users WHERE Id = @id AND Status = 'Inactive'";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.True(result.IsValid);
@@ -103,7 +109,7 @@ WHEN NOT MATCHED THEN
     VALUES(source.Id, source.Name, source.Email);";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.True(result.IsValid);
@@ -117,7 +123,7 @@ WHEN NOT MATCHED THEN
             var sql = "SELECT * FROM"; // Incomplete SQL
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.False(result.IsValid);
@@ -133,7 +139,7 @@ WHEN NOT MATCHED THEN
             var sql = "";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.False(result.IsValid);
@@ -148,7 +154,7 @@ WHEN NOT MATCHED THEN
             string? sql = null;
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql!);
+            var result = _validator.ValidateSyntax(sql!);
 
             // Assert
             Assert.False(result.IsValid);
@@ -163,7 +169,7 @@ WHEN NOT MATCHED THEN
             var sql = "   \t\n  ";
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.False(result.IsValid);
@@ -180,7 +186,7 @@ SELECT Name,
 FROM Users"; // No column after comma
 
             // Act
-            var result = SqlSyntaxValidator.ValidateSyntax(sql);
+            var result = _validator.ValidateSyntax(sql);
 
             // Assert
             Assert.False(result.IsValid);
@@ -196,7 +202,7 @@ FROM Users"; // No column after comma
             var sql = "SELECT * FROM Users";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Select, statementType);
@@ -209,7 +215,7 @@ FROM Users"; // No column after comma
             var sql = "INSERT INTO Users (Name) VALUES ('Test')";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Insert, statementType);
@@ -222,7 +228,7 @@ FROM Users"; // No column after comma
             var sql = "UPDATE Users SET Name = 'Test' WHERE Id = 1";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Update, statementType);
@@ -235,7 +241,7 @@ FROM Users"; // No column after comma
             var sql = "DELETE FROM Users WHERE Id = 1";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Delete, statementType);
@@ -252,7 +258,7 @@ ON target.Id = source.Id
 WHEN MATCHED THEN UPDATE SET Name = source.Name;";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Merge, statementType);
@@ -265,7 +271,7 @@ WHEN MATCHED THEN UPDATE SET Name = source.Name;";
             var sql = "This is not valid SQL";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Unknown, statementType);
@@ -278,7 +284,7 @@ WHEN MATCHED THEN UPDATE SET Name = source.Name;";
             var sql = "";
 
             // Act
-            var statementType = SqlSyntaxValidator.GetStatementType(sql);
+            var statementType = _validator.GetStatementType(sql);
 
             // Assert
             Assert.Equal(SqlStatementType.Unknown, statementType);
@@ -291,7 +297,7 @@ WHEN MATCHED THEN UPDATE SET Name = source.Name;";
             var sql = "SELECT * FROM SalesTax";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);
@@ -308,7 +314,7 @@ FROM Users u
 INNER JOIN Posts p ON u.Id = p.UserId";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Equal(2, tableNames.Length);
@@ -323,7 +329,7 @@ INNER JOIN Posts p ON u.Id = p.UserId";
             var sql = "SELECT * FROM SalesTax WITH(NOLOCK)";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);
@@ -339,7 +345,7 @@ SELECT * FROM Users u1
 INNER JOIN Users u2 ON u1.ParentId = u2.Id";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);
@@ -362,7 +368,7 @@ INNER JOIN Products p ON oi.ProductId = p.Id
 WHERE o.Id IN (SELECT Id FROM CTE)";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Equal(5, tableNames.Length);
@@ -379,7 +385,7 @@ WHERE o.Id IN (SELECT Id FROM CTE)";
             var sql = "This is not valid SQL";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Empty(tableNames);
@@ -392,7 +398,7 @@ WHERE o.Id IN (SELECT Id FROM CTE)";
             var sql = "";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Empty(tableNames);
@@ -405,7 +411,7 @@ WHERE o.Id IN (SELECT Id FROM CTE)";
             var sql = "INSERT INTO Products (Name, Price) VALUES ('Test', 100)";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);
@@ -419,7 +425,7 @@ WHERE o.Id IN (SELECT Id FROM CTE)";
             var sql = "UPDATE Inventory SET Quantity = 10 WHERE ProductId = 1";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);
@@ -433,7 +439,7 @@ WHERE o.Id IN (SELECT Id FROM CTE)";
             var sql = "DELETE FROM Orders WHERE CreatedAt < '2023-01-01'";
 
             // Act
-            var tableNames = SqlSyntaxValidator.ExtractTableNames(sql);
+            var tableNames = _validator.ExtractTableNames(sql);
 
             // Assert
             Assert.Single(tableNames);

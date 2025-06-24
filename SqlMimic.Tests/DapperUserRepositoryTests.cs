@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using SqlMimic.Core;
+using SqlMimic.Core.Abstractions;
+using SqlMimic.SqlServer;
 using SqlMimic.Tests.Models;
 using SqlMimic.Tests.Repositories;
 
@@ -413,9 +415,10 @@ namespace SqlMimic.Tests
             await repository.GetUserStatsAsync();
 
             // Validate all SQL commands
+            var validator = new SqlServerSyntaxValidator();
             foreach (var command in connection.Commands)
             {
-                var result = SqlSyntaxValidator.ValidateSyntax(command.CommandText);
+                var result = validator.ValidateSyntax(command.CommandText);
                 Assert.True(result.IsValid, 
                     $"SQL syntax error in command: {command.CommandText}\nErrors: {string.Join(", ", result.Errors)}");
             }
@@ -457,7 +460,8 @@ namespace SqlMimic.Tests
             Assert.True(commands.Count >= 5);
             
             // Verify that we can detect different statement types
-            var statementTypes = commands.Select(c => SqlSyntaxValidator.GetStatementType(c.CommandText)).ToList();
+            var validator = new SqlServerSyntaxValidator();
+            var statementTypes = commands.Select(c => validator.GetStatementType(c.CommandText)).ToList();
             
             // Should have at least these statement types
             Assert.Contains(SqlStatementType.Select, statementTypes);
